@@ -1,4 +1,0 @@
-br\com\ecouto\brewer\config\init\WebConfig.class
-br\com\ecouto\brewer\config\init\AppInitializer.class
-br\com\ecouto\brewer\controller\CervejasController.class
-br\com\ecouto\brewer\model\Cerveja.class
