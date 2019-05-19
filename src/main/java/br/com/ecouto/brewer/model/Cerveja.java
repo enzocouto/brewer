@@ -6,14 +6,14 @@ import org.hibernate.validator.constraints.NotBlank;
 
 public class Cerveja {
 
-	@NotBlank
+	@NotBlank(message="SKU é obrigatório")
 	private String sku;
 	
-	@NotBlank
+	@NotBlank(message = "Nome é obrigatório")
 	private String nome;
 	
-	@NotBlank
-	@Size(min=3, max=15)
+	@NotBlank(message = "Descrição deve ter de 1 a 50 caracteres")
+	@Size(min=1, max=50)
 	private String descricao;
 	
 	
