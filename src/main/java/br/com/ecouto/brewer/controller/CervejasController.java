@@ -8,16 +8,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import br.com.ecouto.brewer.model.Cerveja;
-
-
 
 @Controller
 public class CervejasController {
 
 	@RequestMapping("/cervejas/novo")
-	public String novo() {
+	public String novo(Model model) {
+		model.addAttribute(new Cerveja());
 		return "cerveja/CadastroCerveja";
 	}
 	
