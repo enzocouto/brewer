@@ -12,8 +12,7 @@ public class Cerveja {
 	@NotBlank(message = "Nome é obrigatório")
 	private String nome;
 	
-	@NotBlank(message = "Descrição deve ter de 1 a 50 caracteres")
-	@Size(min=1, max=50)
+	@Size(min=1, max=50, message = "Descrição deve ter de 1 a 50 caracteres")
 	private String descricao;
 	
 	
