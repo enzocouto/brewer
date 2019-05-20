@@ -8,29 +8,25 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import br.com.ecouto.brewer.model.Cerveja;
-
-
 
 @Controller
 public class CervejasController {
 
-	@RequestMapping("/cervejas/novo")
-	public String novo() {
+	@RequestMapping("/cerveja/novo")
+	public String novo(Cerveja cerveja) {
 		return "cerveja/CadastroCerveja";
 	}
 	
-	@RequestMapping(value="/cervejas/novo" , method = RequestMethod.POST)
+	@RequestMapping(value="/cerveja/novo" , method = RequestMethod.POST)
 	public String cadastrar(@Valid Cerveja cerveja, BindingResult result, Model model,RedirectAttributes attributes) {
 		if(result.hasErrors()) {
-			model.addAttribute("mensagem","Erro no formulário");
-			return "cerveja/CadastroCerveja";
+			model.addAttribute(cerveja);
+			return novo(cerveja);
 		}
 		attributes.addFlashAttribute("mensagem","Cerveja salva com sucesso");
-		System.out.println(">>>>> sku:"+cerveja.getSku());
-		System.out.println(">>>>> nome:"+cerveja.getNome());
-		return "redirect:/cervejas/novo";
+		return "redirect:/cerveja/novo";
 		
 	}
+	
 }
