@@ -13,25 +13,27 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
+import br.com.ecouto.brewer.validation.SKU;
 
 @Entity
 @Table(name="cerveja")
 public class Cerveja implements Serializable{
 
-	
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigo;
 	
+	@SKU
 	@NotBlank(message="SKU é obrigatório")
 	private String sku;
 	
@@ -41,24 +43,35 @@ public class Cerveja implements Serializable{
 	@Size(min=1, max=50, message = "Descrição deve ter de 1 a 50 caracteres")
 	private String descricao;
 	
-	
+	@NotNull(message = "O valor é Obrigatório")
+	@DecimalMin(value = "0.01")
+	@DecimalMax(value = "9999.99" , message = "O valor de cerveja deve ser menor que R$9.999,99")
 	private BigDecimal valor;
 	
+	@NotNull(message = "O teor acóolico é Obrigatório")
+	@DecimalMax(value="100.0", message = "O valor de teor alcóolico deve ser menor que 100")
 	@Column(name="teor_alcolico")
 	private BigDecimal teorAlcolico;
 	
+	@NotNull(message = "A comissão é Obrigatória")
+	@DecimalMax(value="100.0", message = "A commissão deve ser menor que 100")
+	private BigDecimal comissao;
 	
-	private BigDecimal commisao;
-	
+	@NotNull(message = "A quantidade em estoque é Obrigatória")
+	@Min(value = 0, message = "A quantidade em estoque deve ser maior que 0")
+	@Max(value=9999, message = "A quantidade em estoque deve ser menor que 9.999")
 	@Column(name="quantidade_estoque")
 	private Integer quantidadeEstoque;
 	
+	@NotNull(message = "A origem é Obrigatória")
 	@Enumerated(EnumType.STRING)
 	private Origem origem;
 	
+	@NotNull(message = "O sabor é Obrigatório")
 	@Enumerated(EnumType.STRING)
 	private Sabor sabor;
 	
+	@NotNull(message = "O estilo é Obrigatório")
 	@ManyToOne
 	@JoinColumn(name="codigo_estilo")
 	private Estilo estilo;
@@ -100,11 +113,11 @@ public class Cerveja implements Serializable{
 	public void setTeorAlcolico(BigDecimal teorAlcolico) {
 		this.teorAlcolico = teorAlcolico;
 	}
-	public BigDecimal getCommisao() {
-		return commisao;
+	public BigDecimal getComissao() {
+		return comissao;
 	}
-	public void setCommisao(BigDecimal commisao) {
-		this.commisao = commisao;
+	public void setComissao(BigDecimal comissao) {
+		this.comissao = comissao;
 	}
 	public Integer getQuantidadeEstoque() {
 		return quantidadeEstoque;
