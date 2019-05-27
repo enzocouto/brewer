@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.ecouto.brewer.model.Estilo;
 import br.com.ecouto.brewer.service.CadastroEstiloService;
-import br.com.ecouto.brewer.service.exception.NomeEstiloCadastradoException;
+import br.com.ecouto.brewer.service.exception.NomeEstiloJaCadastradoException;
 
 @Controller
 @RequestMapping("/estilo")
@@ -39,7 +39,7 @@ public class EstilosController {
 		
 		try {
 			cadastroEstiloService.salvar(estilo);
-		} catch (NomeEstiloCadastradoException e) {
+		} catch (NomeEstiloJaCadastradoException e) {
 			result.rejectValue("nome", e.getMessage(), e.getMessage());
 			return novo(estilo);
 		}
@@ -54,11 +54,8 @@ public class EstilosController {
 		if(result.hasErrors()) {
 			return ResponseEntity.badRequest().body(result.getFieldError("nome").getDefaultMessage());
 		}
-		try {
-			estilo = cadastroEstiloService.salvar(estilo);
-		}catch(NomeEstiloCadastradoException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
+		
+		estilo = cadastroEstiloService.salvar(estilo);
 		return ResponseEntity.ok(estilo);
 		
 		

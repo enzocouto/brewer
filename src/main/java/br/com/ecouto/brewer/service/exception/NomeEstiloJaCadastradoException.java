@@ -1,13 +1,13 @@
 package br.com.ecouto.brewer.service.exception;
 
-public class NomeEstiloCadastradoException extends RuntimeException {
+public class NomeEstiloJaCadastradoException extends RuntimeException {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public NomeEstiloCadastradoException(String message) {
+	public NomeEstiloJaCadastradoException(String message) {
 		super(message);
 	}
 
