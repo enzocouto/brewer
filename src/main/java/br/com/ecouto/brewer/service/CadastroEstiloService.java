@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.ecouto.brewer.model.Estilo;
 import br.com.ecouto.brewer.repository.EstiloRepository;
-import br.com.ecouto.brewer.service.exception.NomeEstiloCadastradoException;
+import br.com.ecouto.brewer.service.exception.NomeEstiloJaCadastradoException;
 
 @Service
 public class CadastroEstiloService {
@@ -17,11 +17,11 @@ public class CadastroEstiloService {
 	EstiloRepository repository;
 	
 	@Transactional
-	public void salvar(Estilo estilo) {
+	public Estilo salvar(Estilo estilo) {
 		Optional<Estilo> estiloOptional = repository.findByNomeIgnoreCase(estilo.getNome());
 		if(estiloOptional.isPresent()){
-			throw new NomeEstiloCadastradoException("Nome de estilo já cadastrado");
+			throw new NomeEstiloJaCadastradoException("Nome do estilo já cadastrado");
 		}
-		repository.save(estilo);
+		return repository.saveAndFlush(estilo);
 	}
 }
