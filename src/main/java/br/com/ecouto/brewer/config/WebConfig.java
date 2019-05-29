@@ -27,6 +27,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import br.com.ecouto.brewer.controller.CervejasController;
 import br.com.ecouto.brewer.converter.EstiloConverter;
+import br.com.ecouto.brewer.thymeleaf.BrewerDialect;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 
 @Configuration
@@ -57,6 +58,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		engine.setEnableSpringELCompiler(true);
 		engine.setTemplateResolver(templateResolver());
 		engine.addDialect(new LayoutDialect());
+		engine.addDialect(new BrewerDialect());
 		return engine;
 	}
 	
