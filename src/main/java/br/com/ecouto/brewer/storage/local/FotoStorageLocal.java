@@ -9,11 +9,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
 
+import javax.management.RuntimeErrorException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.com.ecouto.brewer.storage.FotoStorage;
+import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.name.Rename;
 
 
 public class FotoStorageLocal implements FotoStorage {
@@ -24,7 +28,7 @@ public class FotoStorageLocal implements FotoStorage {
 	private Path localTemporario;
 	
 	public FotoStorageLocal() {
-		this(getDefault().getPath(System.getenv("HOME"), ".brewerfotos"));
+		this(getDefault().getPath(System.getenv("USERPROFILE"), ".brewerfotos"));
 	}
 	
 	
@@ -48,6 +52,41 @@ public class FotoStorageLocal implements FotoStorage {
 			}
 		}
 		return novoNome;
+	}
+	
+	@Override
+	public byte[] recuperaFotoTemporaria(String nome) {
+		
+	    try {
+			return Files.readAllBytes(this.localTemporario.resolve(nome));
+		} catch (IOException e) {
+			throw new RuntimeException("Erro lendo a foto temporaria",e);
+		}
+	}
+	
+	@Override
+	public byte[] recuperaFoto(String nome) {
+		
+		 try {
+				return Files.readAllBytes(this.local.resolve(nome));
+			} catch (IOException e) {
+				throw new RuntimeException("Erro lendo a foto",e);
+			}
+	}
+	
+	@Override
+	public void salvar(String foto) {
+		try {
+			Files.move(this.localTemporario.resolve(foto), this.local.resolve(foto));
+		} catch (IOException e) {
+			throw new RuntimeException("Erro movbendo foto para destino final "+e);
+		}
+		
+	    try {
+			Thumbnails.of(this.local.resolve(foto).toString()).size(40, 68).toFiles(Rename.PREFIX_DOT_THUMBNAIL);
+		} catch (IOException e) {
+			throw new RuntimeException("Erro gerando Thumbnail "+e);
+		};
 	}
 	
 	private void criarPastas() {
@@ -74,5 +113,8 @@ public class FotoStorageLocal implements FotoStorage {
 		}
 		return novoNome;		
 	}
+
+
 	
+
 }
