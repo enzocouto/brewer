@@ -5,6 +5,9 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -61,12 +64,16 @@ public class CervejasController {
 	}
 	
 	@GetMapping
-	public ModelAndView pesquisar(CervejaFilter filter, BindingResult result) {
+	public ModelAndView pesquisar(CervejaFilter filter, BindingResult result,@PageableDefault(size=2) Pageable pageable) {
 		ModelAndView mv = new ModelAndView("cerveja/PesquisaCerveja");
 		mv.addObject("estilos",estiloRepository.findAll());
 		mv.addObject("sabores", Sabor.values());
 		mv.addObject("origens",Origem.values());
-		mv.addObject("cervejas",repository.filtrar(filter));
+		
+		Page<Cerveja> pagina = repository.filtrar(filter,pageable);
+		mv.addObject("pagina",pagina);
+		
+		
 		return mv;
 	}
 	
