@@ -31,4 +31,7 @@ hs_err_pid*
 ## ignoring target file
 target/
 
-# End of https://www.gitignore.io/api/java,java-web
+.DS_Store
+node_modules/
+assets/vendors/bower/*
+
