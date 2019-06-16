@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.com.ecouto.brewer.model.Cliente;
-import br.com.ecouto.brewer.repository.helper.cerveja.ClienteQueries;
+import br.com.ecouto.brewer.repository.helper.cliente.ClienteQueries;
 
 public interface ClienteRepository extends JpaRepository<Cliente,Long>, ClienteQueries{
 

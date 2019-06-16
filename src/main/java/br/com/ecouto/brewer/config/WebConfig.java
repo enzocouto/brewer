@@ -29,9 +29,9 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
 
 import br.com.ecouto.brewer.controller.CervejasController;
-import br.com.ecouto.brewer.converter.CidadeConverter;
-import br.com.ecouto.brewer.converter.EstadoConverter;
-import br.com.ecouto.brewer.converter.EstiloConverter;
+import br.com.ecouto.brewer.controller.converter.CidadeConverter;
+import br.com.ecouto.brewer.controller.converter.EstadoConverter;
+import br.com.ecouto.brewer.controller.converter.EstiloConverter;
 import br.com.ecouto.brewer.thymeleaf.BrewerDialect;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 

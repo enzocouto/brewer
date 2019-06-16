@@ -39,7 +39,8 @@ Brewer.MaskCep = (function(){
 	function MaskCep(){
 		this.inputCep = $('.js-cep');
 		
-	};
+	}
+  
 	MaskCep.prototype.enable = function(){
 		
 		this.inputCep.mask('00000-000');

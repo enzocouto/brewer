@@ -9,12 +9,12 @@ import org.thymeleaf.processor.element.AbstractElementTagProcessor;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.templatemode.TemplateMode;
 
-public class PaginatorElementTagProcessor extends AbstractElementTagProcessor{
+public class PaginationElementTagProcessor extends AbstractElementTagProcessor{
 	
 	private static final String NOME_TAG = "paginator";
 	private static final int PRECEDENCIA = 1000;
 	
-	public PaginatorElementTagProcessor(String dialectPrefix) {
+	public PaginationElementTagProcessor(String dialectPrefix) {
 		super(TemplateMode.HTML,dialectPrefix,NOME_TAG,true,null,false,PRECEDENCIA);
 	}
 

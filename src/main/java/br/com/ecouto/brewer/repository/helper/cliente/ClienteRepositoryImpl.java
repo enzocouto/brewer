@@ -1,4 +1,4 @@
-package br.com.ecouto.brewer.repository.helper.cerveja;
+package br.com.ecouto.brewer.repository.helper.cliente;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

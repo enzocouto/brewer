@@ -1,4 +1,4 @@
-package br.com.ecouto.brewer.repository.helper.cerveja;
+package br.com.ecouto.brewer.repository.helper.cliente;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
