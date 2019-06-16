@@ -2,7 +2,7 @@
 <html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="'layout/LayoutPadrao'"
+	layout:decorate="~{layout/LayoutPadrao}"
 	xmlns:brewer="http://brewer.algaworks.com">
 	
 <head>
@@ -96,8 +96,14 @@
 				<thead>
 					<tr>
 						<th class="table-cervejas-col-foto"></th>
-						<th class="table-cervejas-col-sku">SKU</th>
-						<th class="table-cervejas-col-nome">Nome</th>
+						<th class="table-cervejas-col-sku">
+						   
+						   <brewer:order page="${pagina}" field="sku" text="SKU"/>
+						</th>
+						<th class="table-cervejas-col-nome">
+						   <!--  <th:block th:replace="fragments/Ordenacao :: order(${pagina}, 'nome', 'Nome')"></th:block> -->
+						   <brewer:order page="${pagina}" field="nome" text="Nome"/>
+						</th>
 						<th class="table-cervejas-col-estilo">Estilo</th>
 						<th class="table-cervejas-col-origem">Origem</th>
 						<th class="table-cervejas-col-valor">Valor</th>
@@ -106,15 +112,15 @@
 				</thead>
 				
 				<tbody>
-					<tr th:each="cerveja : ${pagina.content}">
+					<tr th:each="cerveja : ${pagina.conteudo}">
 						<td class="text-center">
 							<img th:src="@{/fotos/thumbnail.{foto}(foto=${cerveja.fotoOuMock})}" class="img-responsive"/>
 						</td>
-						<td class="text-center" th:text="${cerveja.sku}">AA1234</td>
-						<td th:text="${cerveja.nome}">Cerveja Stella</td>
-						<td th:text="${cerveja.estilo.nome}">Lager</td>
-						<td th:text="${cerveja.origem.descricao}">Internacional</td>
-						<td class="text-right" th:text="|R$ ${cerveja.valor}|">R$ 8.00</td>
+						<td class="text-center" th:text="${cerveja.sku}"></td>
+						<td th:text="${cerveja.nome}"></td>
+						<td th:text="${cerveja.estilo.nome}"></td>
+						<td th:text="${cerveja.origem.descricao}"></td>
+						<td class="text-right" th:text="|R$ ${cerveja.valor}|"></td>
 						<td class="text-center">
 							<a class="btn  btn-link  btn-xs" title="Editar"> 
 								<i class="glyphicon glyphicon-pencil"></i>
@@ -124,30 +130,13 @@
 							</a>
 						</td>
 					</tr>
-					<tr th:if="${#lists.isEmpty(pagina.content)}">
+					<tr th:if="${pagina.vazia}">
 						<td colspan="7">Nenhuma cerveja encontrada</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
-		<div class="col-sm-12  text-center" th:if="${not #lists.isEmpty(pagina.content)}">
-			<nav>
-				<ul class="pagination  pagination-sm">
-					<li class="disabled">
-						<a href="#"><span>&laquo;</span></a>
-					</li>
-					<th:block th:each="p : ${#numbers.sequence(1, pagina.totalPages)}">
-						<li>
-							<a th:href="|?page=${p - 1}|">[[${p}]]</a>
-						</li>
-					</th:block>
-					
-					<li class="disabled">
-						<a href="#"><span>&raquo;</span></a>
-					</li>
-				</ul>
-			</nav>
-		</div>
+		<brewer:paginator page="${pagina}">
 		
 	</div>
 
