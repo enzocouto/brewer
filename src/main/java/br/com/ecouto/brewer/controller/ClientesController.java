@@ -15,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.ecouto.brewer.controller.page.PageWrapper;
-import br.com.ecouto.brewer.model.Cerveja;
 import br.com.ecouto.brewer.model.Cliente;
 import br.com.ecouto.brewer.model.TipoPessoa;
 import br.com.ecouto.brewer.repository.ClienteRepository;
