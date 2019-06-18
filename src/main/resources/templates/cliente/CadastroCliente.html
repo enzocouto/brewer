@@ -110,7 +110,7 @@
 					<label  for="cidade">Cidade</label>
 					<div class="bw-field-action">
 						<input type="hidden" id="inputHiddenCidadeSelecionada" th:value="*{endereco.cidade} != null ? *{endereco.cidade.codigo}"/>
-						<select id="cidade" class="form-control" data:url="@{/cidade}" th:field="*{endereco.cidade}">
+						<select id="cidade" class="form-control" data:url="@{/cidades}" th:field="*{endereco.cidade}">
 						</select>
 						
 						<div class="bw-field-action__icon  js-img-loading" style="display: none">
