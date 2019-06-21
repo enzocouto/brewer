@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import br.com.ecouto.brewer.security.AppUserDetailService;
 
@@ -39,13 +40,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 		.authorizeRequests()
-		.anyRequest().authenticated()
-		.and()
+			.antMatchers("/cidades/nova").hasRole("CADASTRAR_CIDADE")
+			.antMatchers("/usuarios/**").hasRole("CADASTRAR_USUARIO")
+			.anyRequest().authenticated()
+			//.anyRequest().denyAll()
+			.and()
 		.formLogin()
-		.loginPage("/login")
-		.permitAll()
-		.and()
-		.csrf().disable();
+			.loginPage("/login")
+			.permitAll()
+			.and()
+		.logout()
+			.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+			.and()
+		.exceptionHandling()
+			.accessDeniedPage("/403")
+			.and()
+		.sessionManagement()
+			.invalidSessionUrl("/login");
+		
+	//		.and()   
+	//	.sessionManagement()
+	//		.maximumSessions(1) //maximas sessoes por usuario logado
+	//		.expiredUrl("/login");
+		//	.and()
+		//.csrf().disable();
 	}
 	
 	@Bean

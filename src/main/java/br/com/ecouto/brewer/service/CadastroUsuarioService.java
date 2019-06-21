@@ -40,4 +40,10 @@ public class CadastroUsuarioService {
 		
 		repository.save(usuario);
 	}
+
+	@Transactional
+	public void alterarStatus(Long[] codigos, StatusUsuario statusUsuario) {
+		
+		statusUsuario.executar(codigos, repository);
+	}
 }
