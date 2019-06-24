@@ -1,0 +1,1 @@
+INSERT INTO USUARIO(NOME,EMAIL,SENHA,ATIVO) VALUES('admin','admin@brewer.com','$2a$10$T5pwrtyVhVMaUUSvXyun0u97VO0TB0m.14/4aHB1InpDGa/d64qKm',1);
