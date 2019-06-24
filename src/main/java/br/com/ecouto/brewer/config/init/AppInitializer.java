@@ -35,6 +35,7 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 	@Override
 	protected Filter[] getServletFilters() {
 		HttpPutFormContentFilter httpPutFormContentFilter = new HttpPutFormContentFilter();
+		
 		return new Filter[] { httpPutFormContentFilter };
 	}
 	

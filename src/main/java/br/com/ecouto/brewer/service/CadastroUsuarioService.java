@@ -43,7 +43,7 @@ public class CadastroUsuarioService {
 
 	@Transactional
 	public void alterarStatus(Long[] codigos, StatusUsuario statusUsuario) {
-		
-		statusUsuario.executar(codigos, repository);
+		System.out.println(">>>>>>>>>>>>>> codigos: "+codigos.toString()+ "  status: "+statusUsuario.toString());
+		//statusUsuario.executar(codigos, repository);
 	}
 }
