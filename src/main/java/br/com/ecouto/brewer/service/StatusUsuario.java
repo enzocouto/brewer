@@ -12,7 +12,7 @@ public enum StatusUsuario {
 		}
 	},
 	
-	DESASTIVAR {
+	DESATIVAR {
 		@Override
 		public void executar(Long[] codigos, UsuarioRepository repository) {
 			repository.findByCodigoIn(codigos).forEach(u -> u.setAtivo(false));

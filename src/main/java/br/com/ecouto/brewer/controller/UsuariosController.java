@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.com.ecouto.brewer.controller.page.PageWrapper;
 import br.com.ecouto.brewer.model.Usuario;
 import br.com.ecouto.brewer.repository.GrupoRepository;
 import br.com.ecouto.brewer.repository.UsuarioRepository;
@@ -32,8 +33,8 @@ import br.com.ecouto.brewer.service.exception.SenhaObrigatoriaUsuarioException;
 public class UsuariosController {
 
 	@Autowired
-	CadastroUsuarioService cadastroUsuarioService;
-	
+	private CadastroUsuarioService cadastroUsuarioService;
+
 	@Autowired
 	GrupoRepository grupoRepository;
 	
@@ -68,19 +69,21 @@ public class UsuariosController {
 	}
 	
 	@GetMapping
-	public ModelAndView pesquisar(UsuarioFilter filter, 
-			BindingResult result,
-			@PageableDefault(size=2) Pageable pageable,
+	public ModelAndView pesquisar(UsuarioFilter usuarioFilter,
+			@PageableDefault(size=3) Pageable pageable,
 			HttpServletRequest httpServletRequest) {
-		ModelAndView mv = new ModelAndView("usuario/PesquisaUsuario");
-		mv.addObject("grupos",grupoRepository.findAll());
-		mv.addObject("usuarios", repository.filtrar(filter));
+		ModelAndView mv = new ModelAndView("/usuario/PesquisaUsuarios");
+		mv.addObject("grupos", grupoRepository.findAll());
+		
+		PageWrapper<Usuario> paginaWrapper = new PageWrapper<>(repository.filtrar(usuarioFilter,pageable),httpServletRequest);
+		mv.addObject("pagina",paginaWrapper);
 		return mv;
 	}
 	
 	@PutMapping("/status")
 	@ResponseStatus(HttpStatus.OK)
 	public void atualizarStatus(@RequestParam("codigos[]") Long[] codigos, @RequestParam("status") StatusUsuario statusUsuario) {
+		
 		cadastroUsuarioService.alterarStatus(codigos,statusUsuario);
 	}
 
