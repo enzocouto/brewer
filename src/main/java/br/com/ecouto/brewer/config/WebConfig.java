@@ -43,11 +43,12 @@ import br.com.ecouto.brewer.controller.converter.CidadeConverter;
 import br.com.ecouto.brewer.controller.converter.EstadoConverter;
 import br.com.ecouto.brewer.controller.converter.EstiloConverter;
 import br.com.ecouto.brewer.controller.converter.GrupoConverter;
+import br.com.ecouto.brewer.session.TabelaItensVenda;
 import br.com.ecouto.brewer.thymeleaf.BrewerDialect;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 
 @Configuration
-@ComponentScan(basePackageClasses= {CervejasController.class})
+@ComponentScan(basePackageClasses= {CervejasController.class,TabelaItensVenda.class})
 @EnableWebMvc
 @EnableSpringDataWebSupport
 @EnableCaching
