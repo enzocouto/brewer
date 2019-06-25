@@ -18,12 +18,29 @@ Brewer.TabelaItens = (function() {
 			}
 		});
 		
-		resposta.done(onItemAdicionadoNoServidor.bind(this));
+		resposta.done(onItemAtualizadoNoServidor.bind(this));
 	}
 	
-	function onItemAdicionadoNoServidor(html){
+	function onItemAtualizadoNoServidor(html){
 		this.tabelaCervejasContainer.html(html);
 		$('.js-tabela-cerveja-quantidade-item').on('change', onQuantidadeItemAlterado.bind(this));
+		$('.js-tabela-item').on('dblclick',onDoubleClick);
+		$('.js-exclusao-item-btn').on('click',onExclusaoItemClick.bind(this));
+	}
+	
+	function onDoubleClick(evento){
+		var item = $(evento.currentTarget);
+		item.toggleClass('solicitando-exclusao');
+	}
+	
+	function onExclusaoItemClick(evento){
+		var codigoCerveja = $(evento.target).data('codigo-cerveja');
+		var resposta = $.ajax({
+			url: 'item/' + codigoCerveja,
+			method: 'DELETE',
+		});
+		
+		resposta.done(onItemAtualizadoNoServidor.bind(this));
 	}
 	
 	function onQuantidadeItemAlterado(evento) {
@@ -39,7 +56,7 @@ Brewer.TabelaItens = (function() {
 			}
 		});
 		
-		resposta.done(onItemAdicionadoNoServidor.bind(this));
+		resposta.done(onItemAtualizadoNoServidor.bind(this));
 	}
 	
 	return TabelaItens;
