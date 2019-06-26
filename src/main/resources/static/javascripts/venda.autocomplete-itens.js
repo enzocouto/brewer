@@ -24,24 +24,22 @@ Brewer.Autocomplete = (function() {
 			template: {
 				type: 'custom',
 				method: template.bind(this)
-					
 			},
-			list:{
+			list: {
 				onChooseEvent: onItemSelecionado.bind(this)
-					
 			}
 		};
 		
 		this.skuOuNomeInput.easyAutocomplete(options);
 	}
 	
-	function onItemSelecionado(){
-		this.emitter.trigger('item-selecionado',this.skuOuNomeInput.getSelectedItemData());
+	function onItemSelecionado() {
+		this.emitter.trigger('item-selecionado', this.skuOuNomeInput.getSelectedItemData());
 		this.skuOuNomeInput.val('');
 		this.skuOuNomeInput.focus();
 	}
 	
-	function template(nome, cerveja){
+	function template(nome, cerveja) {
 		cerveja.valorFormatado = Brewer.formatarMoeda(cerveja.valor);
 		return this.template(cerveja);
 	}

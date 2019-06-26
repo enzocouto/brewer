@@ -6,17 +6,21 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.SessionScope;
-
 import br.com.ecouto.brewer.model.Cerveja;
 import br.com.ecouto.brewer.model.ItemVenda;
 
-@Component
-@SessionScope
-public class TabelaItensVenda {
+
+class TabelaItensVenda {
+
+	private String uuid;
+	
 
 	private List<ItemVenda> itens = new ArrayList<>();
+	
+	
+	public TabelaItensVenda(String uuid) {
+		this.uuid = uuid;
+	}
 	
 	public BigDecimal getValorTotal() {
 		return itens.stream()
@@ -67,6 +71,35 @@ public class TabelaItensVenda {
 	private Optional<ItemVenda> buscarItensPorCerveja(Cerveja cerveja) {
 		Optional<ItemVenda> itemVendaOptional = itens.stream().filter(i -> i.getCerveja().equals(cerveja)).findAny();
 		return itemVendaOptional;
+	}
+	
+	public String getUuid() {
+		return uuid;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((uuid == null) ? 0 : uuid.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TabelaItensVenda other = (TabelaItensVenda) obj;
+		if (uuid == null) {
+			if (other.uuid != null)
+				return false;
+		} else if (!uuid.equals(other.uuid))
+			return false;
+		return true;
 	}
 
 	

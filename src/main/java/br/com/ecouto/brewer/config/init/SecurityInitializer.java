@@ -1,4 +1,4 @@
-package br.com.ecouto.brewer.config;
+package br.com.ecouto.brewer.config.init;
 
 import java.util.EnumSet;
 
