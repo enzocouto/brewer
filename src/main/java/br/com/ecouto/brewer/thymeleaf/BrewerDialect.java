@@ -17,7 +17,7 @@ public class BrewerDialect extends AbstractProcessorDialect{
 
 	
 	public BrewerDialect() {
-		super("Algaworks Brewer","brewer",StandardDialect.PROCESSOR_PRECEDENCE);
+		super("Brewer","brewer",StandardDialect.PROCESSOR_PRECEDENCE);
 	}
 	
 	@Override
