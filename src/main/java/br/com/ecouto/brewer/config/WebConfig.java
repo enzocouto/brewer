@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.data.repository.support.DomainClassConverter;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.format.number.NumberStyleFormatter;
@@ -43,11 +44,12 @@ import br.com.ecouto.brewer.controller.converter.CidadeConverter;
 import br.com.ecouto.brewer.controller.converter.EstadoConverter;
 import br.com.ecouto.brewer.controller.converter.EstiloConverter;
 import br.com.ecouto.brewer.controller.converter.GrupoConverter;
+import br.com.ecouto.brewer.session.TabelasItensSession;
 import br.com.ecouto.brewer.thymeleaf.BrewerDialect;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 
 @Configuration
-@ComponentScan(basePackageClasses= {CervejasController.class})
+@ComponentScan(basePackageClasses= {CervejasController.class,TabelasItensSession.class})
 @EnableWebMvc
 @EnableSpringDataWebSupport
 @EnableCaching
@@ -111,6 +113,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		
 		DateTimeFormatterRegistrar dateTime = new DateTimeFormatterRegistrar();
 		dateTime.setDateFormatter(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		dateTime.setTimeFormatter(DateTimeFormatter.ofPattern("HH:mm"));
 		dateTime.registerFormatters(conversionService);
 		return conversionService;
 	}
@@ -138,6 +141,11 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		bundle.setBasename("classpath://messages");
 		bundle.setDefaultEncoding("UTF-8");
 		return bundle;
+	}
+	
+	@Bean
+	public DomainClassConverter<FormattingConversionService> domainClassConverter(){
+		return new DomainClassConverter<FormattingConversionService>(mvcConversionService());
 	}
 	
 }
