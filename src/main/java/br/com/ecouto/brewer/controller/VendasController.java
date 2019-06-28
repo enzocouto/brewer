@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.ecouto.brewer.controller.page.PageWrapper;
 import br.com.ecouto.brewer.controller.validator.VendaValidator;
+import br.com.ecouto.brewer.mail.Mailer;
 import br.com.ecouto.brewer.model.Cerveja;
 import br.com.ecouto.brewer.model.StatusVenda;
 import br.com.ecouto.brewer.model.TipoPessoa;
@@ -55,8 +56,11 @@ public class VendasController {
 	@Autowired
 	VendasRepository vendasRepository;
 	
+	@Autowired
+	private Mailer mailer;
+	
 	@InitBinder("venda")
-	public void inicializarValidator(WebDataBinder binder) {
+	public void inicializarValidador(WebDataBinder binder) {
 		binder.setValidator(vendaValidator);
 	}
 	
@@ -99,15 +103,16 @@ public class VendasController {
 
 	
 	
-	@PostMapping(value="/nova",  params= "enviarEmail")
-	public ModelAndView enviarEmail(Venda venda, BindingResult result, RedirectAttributes attributes, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
+	@PostMapping(value="/nova",  params= "enviaremail")
+	public ModelAndView enviaremail(Venda venda, BindingResult result, RedirectAttributes attributes, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
 		validarVenda(venda, result);
 		if(result.hasErrors()) {
 			return nova(venda);
 		}
 		venda.setUsuario(usuarioSistema.getUsuario());
-		cadastroVendaService.salvar(venda);
-		attributes.addFlashAttribute("mensagem","Venda salva e email enviado");
+		venda = cadastroVendaService.salvar(venda);
+		mailer.enviar(venda);
+		attributes.addFlashAttribute("mensagem",String.format("Venda nº %d salva e email enviado",venda.getCodigo()));
 		return new ModelAndView("redirect:/vendas/nova");
 	}
 	
