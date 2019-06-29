@@ -178,6 +178,11 @@ public class Cerveja implements Serializable{
 	public String toString() {
 		return "Cerveja [sku=" + sku + ", nome=" + nome + ", descricao=" + descricao + "]";
 	}
+	
+	public boolean temFoto() {
+		return !StringUtils.isEmpty(foto);
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

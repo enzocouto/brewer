@@ -16,11 +16,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.data.repository.support.DomainClassConverter;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -43,14 +45,16 @@ import br.com.ecouto.brewer.controller.converter.CidadeConverter;
 import br.com.ecouto.brewer.controller.converter.EstadoConverter;
 import br.com.ecouto.brewer.controller.converter.EstiloConverter;
 import br.com.ecouto.brewer.controller.converter.GrupoConverter;
+import br.com.ecouto.brewer.session.TabelasItensSession;
 import br.com.ecouto.brewer.thymeleaf.BrewerDialect;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 
 @Configuration
-@ComponentScan(basePackageClasses= {CervejasController.class})
+@ComponentScan(basePackageClasses= {CervejasController.class,TabelasItensSession.class})
 @EnableWebMvc
 @EnableSpringDataWebSupport
 @EnableCaching
+@EnableAsync
 public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware{
 	
 	private ApplicationContext applicationContext;
@@ -92,6 +96,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		return resolver;
 	}
 	
+	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
 	}
@@ -106,12 +111,16 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		
 		NumberStyleFormatter bigDecimalFormatter = new NumberStyleFormatter("#,##0.00");
 		conversionService.addFormatterForFieldType(BigDecimal.class, bigDecimalFormatter);
+		
 		NumberStyleFormatter integerFormatter = new NumberStyleFormatter("#,##0");
 		conversionService.addFormatterForFieldType(Integer.class, integerFormatter);
 		
-		DateTimeFormatterRegistrar dateTime = new DateTimeFormatterRegistrar();
-		dateTime.setDateFormatter(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-		dateTime.registerFormatters(conversionService);
+		// API de Datas do Java 8
+		DateTimeFormatterRegistrar dateTimeFormatter = new DateTimeFormatterRegistrar();
+		dateTimeFormatter.setDateFormatter(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		dateTimeFormatter.setTimeFormatter(DateTimeFormatter.ofPattern("HH:mm"));
+		dateTimeFormatter.registerFormatters(conversionService);
+		
 		return conversionService;
 	}
 	
@@ -123,21 +132,25 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 	@Bean
 	public CacheManager cacheManager() {
 		CacheBuilder<Object, Object> cacheBuilder = CacheBuilder.newBuilder()
-		.maximumSize(3)
-		.expireAfterAccess(20, TimeUnit.SECONDS);
+				.maximumSize(3)
+				.expireAfterAccess(20, TimeUnit.SECONDS);
 		
 		GuavaCacheManager cacheManager = new GuavaCacheManager();
 		cacheManager.setCacheBuilder(cacheBuilder);
-		
 		return cacheManager;
 	}
 	
 	@Bean
 	public MessageSource messageSource() {
 		ReloadableResourceBundleMessageSource bundle = new ReloadableResourceBundleMessageSource();
-		bundle.setBasename("classpath://messages");
-		bundle.setDefaultEncoding("UTF-8");
+		bundle.setBasename("classpath:/messages");
+		bundle.setDefaultEncoding("UTF-8"); // http://www.utf8-chartable.de/
 		return bundle;
+	}
+	
+	@Bean
+	public DomainClassConverter<FormattingConversionService> domainClassConverter(){
+		return new DomainClassConverter<FormattingConversionService>(mvcConversionService());
 	}
 	
 }

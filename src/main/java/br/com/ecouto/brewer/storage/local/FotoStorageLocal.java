@@ -65,7 +65,7 @@ public class FotoStorageLocal implements FotoStorage {
 	}
 	
 	@Override
-	public byte[] recuperaFoto(String nome) {
+	public byte[] recuperar(String nome) {
 		
 		 try {
 				return Files.readAllBytes(this.local.resolve(nome));
@@ -112,6 +112,13 @@ public class FotoStorageLocal implements FotoStorage {
 			logger.debug(String.format("Nome original: %s Novo nome %s",nomeOriginal,novoNome));
 		}
 		return novoNome;		
+	}
+
+
+	@Override
+	public byte[] recuperarThumbnailByPrefix(String fotoCerveja) {
+	
+		return recuperar("thumbnail."+ fotoCerveja);
 	}
 
 

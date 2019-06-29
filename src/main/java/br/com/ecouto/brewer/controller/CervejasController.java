@@ -1,5 +1,7 @@
 package br.com.ecouto.brewer.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -8,16 +10,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.ecouto.brewer.controller.page.PageWrapper;
+import br.com.ecouto.brewer.dto.CervejaDTO;
 import br.com.ecouto.brewer.model.Cerveja;
 import br.com.ecouto.brewer.model.Origem;
 import br.com.ecouto.brewer.model.Sabor;
@@ -54,9 +59,8 @@ public class CervejasController {
 	
 	@RequestMapping(value="/novo" , method = RequestMethod.POST)
 	public ModelAndView cadastrar(@Valid Cerveja cerveja, BindingResult result, Model model,RedirectAttributes attributes) {
-		if(result.hasErrors()) {
-			throw new RuntimeException();
-			//return novo(cerveja);
+		if(result.hasErrors()) {		
+			return novo(cerveja);
 		}
 		
 		cadastroCervejaService.salvar(cerveja);
@@ -77,9 +81,12 @@ public class CervejasController {
 		
 		PageWrapper<Cerveja> paginaWrapper = new PageWrapper<>(repository.filtrar(filter,pageable),httpServletRequest);
 		mv.addObject("pagina",paginaWrapper);
-		
-		
 		return mv;
+	}
+	
+	@RequestMapping(consumes= MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<CervejaDTO> pesquisar(String skuOuNome){
+		return repository.porSkuOuNome(skuOuNome);
 	}
 	
 }

@@ -45,46 +45,58 @@ Brewer.MaskCep = (function(){
 		
 		this.inputCep.mask('00000-000');
 	}
+	
 	return MaskCep;
+	
 }());
 
-Brewer.MaskDate = (function(){
+Brewer.MaskDate = (function() {
 	
-	function MaskDate(){
+	function MaskDate() {
 		this.inputDate = $('.js-date');
 	}
 	
-	MaskDate.prototype.enable = function(){
+	MaskDate.prototype.enable = function() {
 		this.inputDate.mask('00/00/0000');
 		this.inputDate.datepicker({
-			orientation:'bottom',
-			language:'pt-BR',
-			autoclose:true
+			orientation: 'bottom',
+			language: 'pt-BR',
+			autoclose: true
 		});
 	}
 	
 	return MaskDate;
+	
 }());
 
-Brewer.Security = (function(){
+Brewer.Security = (function() {
 	
-	function Security(){
+	function Security() {
 		this.token = $('input[name=_csrf]').val();
 		this.header = $('input[name=_csrf_header]').val();
 	}
 	
-	Security.prototype.enable = function(){
-		$(document).ajaxSend(function(event, jqxhr, settings){
-			jqxhr.setRequestHeader(this.header,this.token);
+	Security.prototype.enable = function() {
+		$(document).ajaxSend(function(event, jqxhr, settings) {
+			jqxhr.setRequestHeader(this.header, this.token);
 		}.bind(this));
 	}
 	
 	return Security;
+	
 }());
 
+numeral.language('pt-br');
 
+Brewer.formatarMoeda = function(valor) {
+	return numeral(valor).format('0,0.00');
+}
 
-$(function(){
+Brewer.recuperarValor = function(valorFormatado) {
+	return numeral().unformat(valorFormatado);
+}
+
+$(function() {
 	var maskMoney = new Brewer.MaskMoney();
 	maskMoney.enable();
 	

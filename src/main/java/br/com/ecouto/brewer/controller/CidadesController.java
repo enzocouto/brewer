@@ -33,7 +33,7 @@ import br.com.ecouto.brewer.service.exception.NomeCidadeJaCadastradaException;
 
 @Controller
 @RequestMapping("/cidades")
-public class CidadeController {
+public class CidadesController {
 
 	@Autowired
 	private CidadeRepository cidadeRepository;
