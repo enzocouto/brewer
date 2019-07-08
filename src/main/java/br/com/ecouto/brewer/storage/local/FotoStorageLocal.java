@@ -9,8 +9,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
 
-import javax.management.RuntimeErrorException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,7 +21,7 @@ import net.coobird.thumbnailator.name.Rename;
 public class FotoStorageLocal implements FotoStorage {
 
 	private static final Logger logger = LoggerFactory.getLogger(FotoStorageLocal.class);
-	
+	private static final String THUMBNAIL_PREFIX = "thumbnail.";
 	private Path local;
 	private Path localTemporario;
 	
@@ -118,7 +116,18 @@ public class FotoStorageLocal implements FotoStorage {
 	@Override
 	public byte[] recuperarThumbnailByPrefix(String fotoCerveja) {
 	
-		return recuperar("thumbnail."+ fotoCerveja);
+		return recuperar(THUMBNAIL_PREFIX+ fotoCerveja);
+	}
+
+
+	@Override
+	public void excluir(String foto) {
+	   try {
+		Files.deleteIfExists(this.local.resolve(foto));
+		Files.deleteIfExists(this.local.resolve(THUMBNAIL_PREFIX + foto));
+	   } catch (IOException e) {
+		logger.warn("Erro ao excluir foto %s.Mensagem: %s"+foto,e.getMessage());
+	   }
 	}
 
 

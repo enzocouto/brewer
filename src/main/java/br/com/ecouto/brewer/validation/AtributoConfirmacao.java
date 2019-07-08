@@ -10,6 +10,8 @@ import javax.validation.OverridesAttribute;
 import javax.validation.Payload;
 import javax.validation.constraints.Pattern;
 
+import br.com.ecouto.brewer.validation.validator.AtributoConfirmacaoValidator;
+
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = { AtributoConfirmacaoValidator.class})
