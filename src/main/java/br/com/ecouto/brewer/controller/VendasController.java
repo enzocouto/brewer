@@ -1,5 +1,7 @@
 package br.com.ecouto.brewer.controller;
 
+
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -25,8 +28,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.ecouto.brewer.controller.page.PageWrapper;
 import br.com.ecouto.brewer.controller.validator.VendaValidator;
+import br.com.ecouto.brewer.dto.VendaMes;
+import br.com.ecouto.brewer.dto.VendaOrigem;
 import br.com.ecouto.brewer.mail.Mailer;
 import br.com.ecouto.brewer.model.Cerveja;
+import br.com.ecouto.brewer.model.ItemVenda;
 import br.com.ecouto.brewer.model.StatusVenda;
 import br.com.ecouto.brewer.model.TipoPessoa;
 import br.com.ecouto.brewer.model.Venda;
@@ -54,7 +60,7 @@ public class VendasController {
 	VendaValidator vendaValidator;
 	
 	@Autowired
-	VendasRepository vendasRepository;
+	VendasRepository repository;
 	
 	@Autowired
 	private Mailer mailer;
@@ -67,9 +73,7 @@ public class VendasController {
 	@GetMapping("/nova")
 	public ModelAndView nova(Venda venda) {
 		ModelAndView mv = new ModelAndView("venda/CadastroVenda");
-		if(StringUtils.isEmpty(venda.getUuid())) {
-			venda.setUuid(UUID.randomUUID().toString());
-		}
+		setUUid(venda);
 		mv.addObject("itens",venda.getItens());
 		mv.addObject("valorFrete",venda.getValorFrete());
 		mv.addObject("valorDesconto", venda.getValorDesconto());
@@ -135,6 +139,20 @@ public class VendasController {
 		tabelaItens.excluirItem(uuid,cerveja);
 		return mvTabelaItensVenda(uuid);
 	}
+	
+	@PostMapping(value="/nova",  params= "cancelar")
+	public ModelAndView cancelar(Venda venda, BindingResult result, RedirectAttributes attributes, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
+		
+		try {
+			cadastroVendaService.cancelar(venda);
+		}catch(AccessDeniedException e) {
+			return new ModelAndView("/403");
+		}
+		
+		
+		attributes.addFlashAttribute("mensagem","Venda cancelada com sucesso");
+		return new ModelAndView("redirect:/vendas/" + venda.getCodigo());
+	}
 
 	@GetMapping
 	public ModelAndView pesquisar(VendaFilter vendaFilter,
@@ -143,12 +161,21 @@ public class VendasController {
 		mv.addObject("todosStatus", StatusVenda.values());
 		mv.addObject("tiposPessoa", TipoPessoa.values());
 		
-		PageWrapper<Venda> paginaWrapper = new PageWrapper<>(vendasRepository.filtrar(vendaFilter, pageable)
+		PageWrapper<Venda> paginaWrapper = new PageWrapper<>(repository.filtrar(vendaFilter, pageable)
 				, httpServletRequest);
 		mv.addObject("pagina", paginaWrapper);
 		return mv;
 	}
 	
+	@GetMapping("/totalPorMes")
+	public @ResponseBody List<VendaMes> listarTotalVendaPorMes() {
+		return repository.totalPorMes();
+	}
+	
+	@GetMapping("/porOrigem")
+	public @ResponseBody List<VendaOrigem> listarTotalVendaPorOrigem() {
+		return repository.totalPorOrigem();
+	}
 	
 	private ModelAndView mvTabelaItensVenda(String uuid) {
 		ModelAndView mv = new ModelAndView("venda/TabelaItensVenda");
@@ -161,6 +188,27 @@ public class VendasController {
 		venda.adicionarItens(tabelaItens.getItens(venda.getUuid()));
 		venda.calcularValorTotal();
 		vendaValidator.validate(venda, result);
+	}
+	
+
+	@GetMapping("/{codigo}")
+	public ModelAndView editar(@PathVariable("codigo") Long codigo) {
+		Venda venda = repository.buscarComItens(codigo);
+		
+		setUUid(venda);
+		for(ItemVenda item : venda.getItens()) {
+			tabelaItens.adicionarItem(venda.getUuid(), item.getCerveja(), item.getQuantidade());
+		}
+		
+		ModelAndView mv = nova(venda);
+		mv.addObject(venda);
+		return mv;
+	}
+
+	private void setUUid(Venda venda) {
+		if(StringUtils.isEmpty(venda.getUuid())) {
+			venda.setUuid(UUID.randomUUID().toString());
+		}
 	}
 
 }

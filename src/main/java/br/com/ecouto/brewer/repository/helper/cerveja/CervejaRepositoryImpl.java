@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import br.com.ecouto.brewer.dto.CervejaDTO;
+import br.com.ecouto.brewer.dto.TotaisEstoqueCervejaDTO;
 import br.com.ecouto.brewer.model.Cerveja;
 import br.com.ecouto.brewer.repository.filter.CervejaFilter;
 import br.com.ecouto.brewer.repository.paginacao.PaginacaoUtil;
@@ -41,6 +42,16 @@ public class CervejaRepositoryImpl implements CervejasQueries{
 		adicionarFiltro(filtro, criteria);
 		
 		return new PageImpl<>(criteria.list(), pageable, total(filtro));
+	}
+	
+	@Override
+	public TotaisEstoqueCervejaDTO getTotaisEstoque() {
+		//select sum(quantidade_estoque) quantidade, sum(quantidade_estoque * valor) valor_estoque from brewer.cerveja
+		String query = "select new br.com.ecouto.brewer.dto.TotaisEstoqueCervejaDTO(sum(valor * quantidadeEstoque), sum(quantidadeEstoque)) from Cerveja";
+		TotaisEstoqueCervejaDTO totaisEstoque = manager.createQuery(query,TotaisEstoqueCervejaDTO.class)
+				.getSingleResult();
+		
+		return totaisEstoque;
 	}
 	
 	private Long total(CervejaFilter filtro) {

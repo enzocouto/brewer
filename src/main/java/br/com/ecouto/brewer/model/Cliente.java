@@ -73,6 +73,10 @@ public class Cliente implements Serializable{
 		return TipoPessoa.removerFormatacao(this.cpfOuCnpj);
 	}
 	
+	public boolean isNovo() {
+		return codigo == null;
+	}
+	
 	@Embedded
 	@JsonIgnore
 	private Endereco endereco;

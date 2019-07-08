@@ -7,4 +7,5 @@ import br.com.ecouto.brewer.repository.helper.venda.VendasQueries;
 
 public interface VendasRepository extends JpaRepository<Venda, Long>, VendasQueries {
 
+
 }

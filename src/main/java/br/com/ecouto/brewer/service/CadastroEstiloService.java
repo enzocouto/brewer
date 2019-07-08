@@ -19,9 +19,15 @@ public class CadastroEstiloService {
 	@Transactional
 	public Estilo salvar(Estilo estilo) {
 		Optional<Estilo> estiloOptional = repository.findByNomeIgnoreCase(estilo.getNome());
-		if(estiloOptional.isPresent()){
+		if(estiloOptional.isPresent() && !estiloOptional.get().equals(estilo)){
 			throw new NomeEstiloJaCadastradoException("Nome do estilo já cadastrado");
 		}
+		
 		return repository.saveAndFlush(estilo);
+	}
+
+	@Transactional
+	public void excluir(Estilo estilo) {	
+		repository.delete(estilo);
 	}
 }

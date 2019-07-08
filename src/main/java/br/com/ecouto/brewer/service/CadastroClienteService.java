@@ -20,9 +20,15 @@ public class CadastroClienteService {
 	@Transactional
 	public void salvar(Cliente cliente) {
 		Optional<Cliente> clienteExistente = repository.findByCpfOuCnpj(cliente.getCpfOuCnpjSemFormatacao());
-		if(clienteExistente.isPresent()) {
+		if(clienteExistente.isPresent() && !clienteExistente.get().equals(cliente)) {
 			throw new CpfCnpjClienteJaCadastradoException("CPF/CNPJ já cadastrado");
 		}
-		repository.save(cliente);
+		
+		repository.saveAndFlush(cliente);
+	}
+
+    @Transactional
+	public void excluir(Cliente cliente) {
+	     repository.delete(cliente);	
 	}
 }

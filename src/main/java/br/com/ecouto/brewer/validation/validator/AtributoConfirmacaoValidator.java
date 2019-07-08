@@ -1,10 +1,12 @@
-package br.com.ecouto.brewer.validation;
+package br.com.ecouto.brewer.validation.validator;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder;
 
 import org.apache.commons.beanutils.BeanUtils;
+
+import br.com.ecouto.brewer.validation.AtributoConfirmacao;
 
 
 
