@@ -19,10 +19,11 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.data.repository.support.DomainClassConverter;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
-import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -40,6 +41,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
 import com.google.common.cache.CacheBuilder;
 
+import br.com.ecouto.brewer.config.format.BigDecimalFormat;
 import br.com.ecouto.brewer.controller.CervejasController;
 import br.com.ecouto.brewer.controller.converter.CidadeConverter;
 import br.com.ecouto.brewer.controller.converter.EstadoConverter;
@@ -109,11 +111,14 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		conversionService.addConverter(new EstadoConverter());
 		conversionService.addConverter(new GrupoConverter());
 		
-		NumberStyleFormatter bigDecimalFormatter = new NumberStyleFormatter("#,##0.00");
+		BigDecimalFormat bigDecimalFormatter = new BigDecimalFormat("#,##0.00");
 		conversionService.addFormatterForFieldType(BigDecimal.class, bigDecimalFormatter);
 		
-		NumberStyleFormatter integerFormatter = new NumberStyleFormatter("#,##0");
+		BigDecimalFormat integerFormatter = new BigDecimalFormat("#,##0");
 		conversionService.addFormatterForFieldType(Integer.class, integerFormatter);
+		
+		BigDecimalFormat longFormatter = new BigDecimalFormat("#,##0");
+		conversionService.addFormatterForFieldType(Long.class, longFormatter);
 		
 		// API de Datas do Java 8
 		DateTimeFormatterRegistrar dateTimeFormatter = new DateTimeFormatterRegistrar();
@@ -124,6 +129,20 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		return conversionService;
 	}
 	
+	@Bean
+	public LocalValidatorFactoryBean validator() {
+		LocalValidatorFactoryBean validatorfactoryBean = new LocalValidatorFactoryBean();
+		validatorfactoryBean.setValidationMessageSource(messageSource());
+		return validatorfactoryBean;
+	}
+	
+	@Override
+	public Validator getValidator() {
+		
+		return validator();
+	}
+	
+	// @TODO: Quando finalizar a internacionalização de todo sistema, deve retirar esse bean
 	@Bean
 	public LocaleResolver localeResolver() {
 		return new FixedLocaleResolver(new Locale("pt", "BR"));

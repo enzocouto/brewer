@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import br.com.ecouto.brewer.model.Cerveja;
 import br.com.ecouto.brewer.repository.CervejaRepository;
-import br.com.ecouto.brewer.service.CadastroCervejaService;
 
 @Configuration
 @ComponentScan(basePackageClasses = CervejaRepository.class)

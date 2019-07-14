@@ -114,7 +114,12 @@ public class VendasController {
 			return nova(venda);
 		}
 		venda.setUsuario(usuarioSistema.getUsuario());
-		venda = cadastroVendaService.salvar(venda);
+		try {
+			venda = cadastroVendaService.salvar(venda);
+		}catch(RuntimeException e) {
+			attributes.addFlashAttribute("mensagem",e.getMessage());
+		}
+	
 		mailer.enviar(venda);
 		attributes.addFlashAttribute("mensagem",String.format("Venda nº %d salva e email enviado",venda.getCodigo()));
 		return new ModelAndView("redirect:/vendas/nova");

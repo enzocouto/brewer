@@ -6,8 +6,10 @@ Brewer.MaskMoney = (function(){
 		this.plain = $('.js-plain');
 	}
 	MaskMoney.prototype.enable = function(){
-		this.decimal.maskMoney({ decimal: ',',thousands: '.'});
-		this.plain.maskMoney({precision:0, thousands: '.'});
+	//	this.decimal.maskMoney({ decimal: ',',thousands: '.'});
+	//	this.plain.maskMoney({precision:0, thousands: '.'});
+		this.decimal.maskNumber({ decimal: ',',thousands: '.'});
+		this.plain.maskNumber({integer:true, thousands: '.'});
 	}
 	
 	return MaskMoney;

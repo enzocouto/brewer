@@ -22,6 +22,7 @@ import br.com.ecouto.brewer.dto.TotaisEstoqueCervejaDTO;
 import br.com.ecouto.brewer.model.Cerveja;
 import br.com.ecouto.brewer.repository.filter.CervejaFilter;
 import br.com.ecouto.brewer.repository.paginacao.PaginacaoUtil;
+import br.com.ecouto.brewer.storage.FotoStorage;
     
 
 public class CervejaRepositoryImpl implements CervejasQueries{
@@ -31,6 +32,9 @@ public class CervejaRepositoryImpl implements CervejasQueries{
 	
 	@Autowired
 	PaginacaoUtil paginacaoUtil;
+	
+	@Autowired
+	private FotoStorage fotoStorage;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -104,6 +108,8 @@ public class CervejaRepositoryImpl implements CervejasQueries{
 		List<CervejaDTO> cervejasFiltradas = manager.createQuery(jpql,CervejaDTO.class)
 				.setParameter("skuOuNome", skuOuNome+"%")
 				.getResultList();
+		
+		cervejasFiltradas.forEach(c -> c.setUrlThumbnailFoto(fotoStorage.getUrl(FotoStorage.THUMBNAIL_PREFIX + c.getFoto())));
 		return cervejasFiltradas;
 	}
 
