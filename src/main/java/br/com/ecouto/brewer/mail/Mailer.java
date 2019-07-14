@@ -80,7 +80,7 @@ public class Mailer {
 				String[] fotoContentType = fotos.get(cid).split("\\|");
 				String foto = fotoContentType[0];
 				String contentType = fotoContentType[1];
-				byte[] arrayFoto = fotoStorage.recuperarThumbnailByPrefix(foto);
+				byte[] arrayFoto = fotoStorage.recuperarThumbnail(foto);
 				helper.addInline(cid, new ByteArrayResource(arrayFoto), contentType);
 			}
 		
