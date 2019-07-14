@@ -26,13 +26,13 @@
 		<servlet.version>3.1.0</servlet.version>
 		
 		<!-- Thymeleaf -->
-		<thymeleaf.version>3.0.0.RELEASE</thymeleaf.version>
+		<thymeleaf.version>3.0.4.RELEASE</thymeleaf.version>
 		
 		<!-- Bean Validation / Hibernate Validator -->
 		<hibernate-validator.version>5.2.4.Final</hibernate-validator.version>
 		
 		<!-- Thymeleaf - Layout Dialect -->
-		<thymeleaf-layout-dialect.version>2.0.0</thymeleaf-layout-dialect.version>
+		<thymeleaf-layout-dialect.version>2.4.1</thymeleaf-layout-dialect.version>
 		
 		<!-- Logging -->
 		<log4j.version>2.6</log4j.version>
@@ -72,9 +72,15 @@
 		<!-- Java Mail -->
 		<javax.mail.version>1.5.6</javax.mail.version>
 		
+		<!-- AWS SDK - S3 -->
+		<aws-java-sdk-s3.version>1.10.77</aws-java-sdk-s3.version>
+		
+		<!-- Apache Commons DBCP -->
+		<commons-dbcp2.version>2.1.1</commons-dbcp2.version>
 	</properties>
 
 	<build>
+	    <finalName>${artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -94,6 +100,24 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<profiles>
+	   <profile>
+	   		<id>local</id>
+	   </profile>
+	   <profile>
+	   		<id>prod</id>
+	   		<dependencies>
+	   			<!-- MySQL Driver -->
+				<dependency>
+					<groupId>mysql</groupId>
+					<artifactId>mysql-connector-java</artifactId>
+					<version>${mysql-connector-java.version}</version>
+					<scope>compile</scope>
+				</dependency>
+	   		</dependencies>
+	   </profile>
+	</profiles>
 
 	<dependencyManagement>
 		<dependencies>
@@ -197,14 +221,6 @@
     		<scope>compile</scope>
 		</dependency>
 		
-		<!-- MySQL Driver -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>${mysql-connector-java.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		
 		<!-- Spring Data JPA -->
 		<dependency>
 		    <groupId>org.springframework.data</groupId>
@@ -292,12 +308,32 @@
 		
 		<!-- Java Mail -->
 		<dependency>
-			<groupId>com.sun.mail</groupId>
-			<artifactId>javax.mail</artifactId>
-			<version>${javax.mail.version}</version>
-			<scope>compile</scope>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>${javax.mail.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        
+        <dependency>
+    		<groupId>javax.mail</groupId>
+    		<artifactId>mail</artifactId>
+    		<version>1.4.3</version>
 		</dependency>
 		
+		<!-- AWS SDK - S3 -->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>${aws-java-sdk-s3.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-dbcp2</artifactId>
+			<version>${commons-dbcp2.version}</version>
+		</dependency>
+		
+        		
 	</dependencies>
 
 </project>

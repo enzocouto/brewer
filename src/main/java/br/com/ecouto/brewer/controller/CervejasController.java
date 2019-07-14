@@ -11,10 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,6 +33,7 @@ import br.com.ecouto.brewer.repository.CervejaRepository;
 import br.com.ecouto.brewer.repository.EstiloRepository;
 import br.com.ecouto.brewer.repository.filter.CervejaFilter;
 import br.com.ecouto.brewer.service.CadastroCervejaService;
+import br.com.ecouto.brewer.service.exception.ImpossivelExcluirEntidadeException;
 
 @Controller
 @RequestMapping("/cerveja")
@@ -47,8 +51,8 @@ public class CervejasController {
 	@Autowired
 	private CervejaRepository repository;
 	
-	@RequestMapping("/novo")
-	public ModelAndView novo(Cerveja cerveja) {
+	@RequestMapping("/nova")
+	public ModelAndView nova(Cerveja cerveja) {
 		ModelAndView mv = new ModelAndView( "cerveja/CadastroCerveja");
 		mv.addObject("estilos",estiloRepository.findAll());
 		mv.addObject("sabores", Sabor.values());
@@ -57,15 +61,15 @@ public class CervejasController {
 		return mv;
 	}
 	
-	@RequestMapping(value="/novo" , method = RequestMethod.POST)
-	public ModelAndView cadastrar(@Valid Cerveja cerveja, BindingResult result, Model model,RedirectAttributes attributes) {
+	@RequestMapping(value= {"/nova","{\\d+}"} , method = RequestMethod.POST)
+	public ModelAndView salvar(@Valid Cerveja cerveja, BindingResult result, Model model,RedirectAttributes attributes) {
 		if(result.hasErrors()) {		
-			return novo(cerveja);
+			return nova(cerveja);
 		}
 		
 		cadastroCervejaService.salvar(cerveja);
 		attributes.addFlashAttribute("mensagem","Cerveja salva com sucesso");
-		return new ModelAndView("redirect:/cerveja/novo");
+		return new ModelAndView("redirect:/cerveja/nova");
 		
 	}
 	
@@ -87,6 +91,24 @@ public class CervejasController {
 	@RequestMapping(consumes= MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<CervejaDTO> pesquisar(String skuOuNome){
 		return repository.porSkuOuNome(skuOuNome);
+	}
+	
+	@DeleteMapping("/{codigo}")
+	public @ResponseBody ResponseEntity<?> excluir(@PathVariable("codigo") Cerveja cerveja){
+		
+		try {
+			cadastroCervejaService.excluir(cerveja);
+			return ResponseEntity.ok().build();
+		}catch(ImpossivelExcluirEntidadeException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@GetMapping("/{codigo}")
+	public ModelAndView editar(@PathVariable("codigo") Cerveja cerveja) {
+		ModelAndView mv = nova(cerveja);
+		mv.addObject(cerveja);
+		return mv;
 	}
 	
 }

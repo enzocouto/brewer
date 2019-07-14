@@ -61,12 +61,27 @@ public class UsuarioRepositoryImpl implements UsuarioQueries{
 		Criteria criteria = manager.unwrap(Session.class).createCriteria(Usuario.class);
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		paginacaoUtil.preparar(criteria, pageable);
+		//somente usuarios ativo
+		criteria.add(Restrictions.eq("ativo",true));
 		adicionarFiltro(filtro, criteria);
 		
 		
 		List<Usuario> filtrados = criteria.list();
 		filtrados.forEach(u -> Hibernate.initialize(u.getGrupos()));
 		return new PageImpl<>(criteria.list(), pageable, total(filtro));
+	}
+	
+	@Transactional(readOnly = true)
+	@Override
+	public Usuario buscarComGrupos(Long codigo) {
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(Usuario.class);
+		criteria.createAlias("grupos", "g", JoinType.LEFT_OUTER_JOIN);
+		criteria.add(Restrictions.eq("codigo", codigo));
+		//somente usuarios ativo
+		criteria.add(Restrictions.eq("ativo",true));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return (Usuario) criteria.uniqueResult();
+		
 	}
 	
 	private Long total(UsuarioFilter filtro) {
@@ -102,5 +117,7 @@ public class UsuarioRepositoryImpl implements UsuarioQueries{
 			}
 		}
 	}
+
+	
 	
 }

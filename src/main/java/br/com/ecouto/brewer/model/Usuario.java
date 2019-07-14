@@ -50,7 +50,6 @@ public class Usuario implements Serializable {
 	@Transient
 	private String confirmacaoSenha;
 
-	@NotNull(message="Status é obrigatório")
 	private Boolean ativo;
 
 	@Size(min=1 , message = "Selecione pelo menos um grupo")
@@ -74,7 +73,7 @@ public class Usuario implements Serializable {
 	public boolean isNovo() {
 		return codigo == null;
 	}
-
+	
 	public void setCodigo(Long codigo) {
 		this.codigo = codigo;
 	}
@@ -134,7 +133,7 @@ public class Usuario implements Serializable {
 	public void setGrupos(List<Grupo> grupos) {
 		this.grupos = grupos;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

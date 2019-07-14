@@ -24,7 +24,17 @@ public class VendaValidator implements Validator {
 		Venda venda = (Venda) target;
 		validarSeInformouApenasHorarioEntrega(errors, venda);
 		validarSeInformouItens(errors, venda);
+		validarQuantidadeEstoqueDisponivel(errors,venda);
 		validarValorTotalNegativo(errors, venda);
+	}
+
+	private void validarQuantidadeEstoqueDisponivel(Errors errors, Venda venda) {
+		venda.getItens().forEach(item ->{
+			if(item.getQuantidade() > item.getCerveja().getQuantidadeEstoque()) {
+				errors.reject("", "Quantidade ("+item.getQuantidade()+") da venda do item "+item.getCerveja().getDescricao()+" maior que quantidade em estoque:"+ item.getCerveja().getQuantidadeEstoque());
+			}
+		});
+		
 	}
 
 	private void validarValorTotalNegativo(Errors errors, Venda venda) {
