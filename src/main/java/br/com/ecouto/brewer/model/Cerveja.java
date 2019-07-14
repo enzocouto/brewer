@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -26,8 +27,10 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.util.StringUtils;
 
+import br.com.ecouto.brewer.repository.listener.CervejaEntityListner;
 import br.com.ecouto.brewer.validation.SKU;
 
+@EntityListeners(CervejaEntityListner.class)
 @Entity
 @Table(name="cerveja")
 public class Cerveja implements Serializable{
@@ -39,44 +42,50 @@ public class Cerveja implements Serializable{
 	private Long codigo;
 	
 	@SKU
-	@NotBlank(message="SKU é obrigatório")
+	@NotBlank
 	private String sku;
 	
-	@NotBlank(message = "Nome é obrigatório")
+	@Transient
+	private String urlFoto;
+	
+	@Transient
+	private String urlThumbnailFoto;
+	
+	@NotBlank
 	private String nome;
 	
 	@Size(min=1, max=50, message = "Descrição deve ter de 1 a 50 caracteres")
 	private String descricao;
 	
-	@NotNull(message = "O valor é Obrigatório")
+	@NotNull
 	@DecimalMin(value = "0.01")
 	@DecimalMax(value = "9999.99" , message = "O valor de cerveja deve ser menor que R$9.999,99")
 	private BigDecimal valor;
 	
-	@NotNull(message = "O teor acóolico é Obrigatório")
+	@NotNull
 	@DecimalMax(value="100.0", message = "O valor de teor alcóolico deve ser menor que 100")
 	@Column(name="teor_alcolico")
 	private BigDecimal teorAlcolico;
 	
-	@NotNull(message = "A comissão é Obrigatória")
+	@NotNull
 	@DecimalMax(value="100.0", message = "A commissão deve ser menor que 100")
 	private BigDecimal comissao;
 	
-	@NotNull(message = "A quantidade em estoque é Obrigatória")
+	@NotNull
 	@Min(value = 0, message = "A quantidade em estoque deve ser maior que 0")
-	@Max(value=9999, message = "A quantidade em estoque deve ser menor que 9.999")
+	@Max(value=999999, message = "A quantidade em estoque deve ser no máximo 999.999")
 	@Column(name="quantidade_estoque")
 	private Integer quantidadeEstoque;
 	
-	@NotNull(message = "A origem é Obrigatória")
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private Origem origem;
 	
-	@NotNull(message = "O sabor é Obrigatório")
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private Sabor sabor;
 	
-	@NotNull(message = "O estilo é Obrigatório")
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name="codigo_estilo")
 	private Estilo estilo;
@@ -198,6 +207,21 @@ public class Cerveja implements Serializable{
 	public void setNovaFoto(boolean novaFoto) {
 		this.novaFoto = novaFoto;
 	}
+	
+	public String getUrlThumbnailFoto() {
+		return urlThumbnailFoto;
+	}
+	public void setUrlThumbnailFoto(String urlThumbnailFoto) {
+		this.urlThumbnailFoto = urlThumbnailFoto;
+	}
+	public String getUrlFoto() {
+		return urlFoto;
+	}
+	
+	public void setUrlFoto(String urlFoto) {
+		this.urlFoto = urlFoto;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

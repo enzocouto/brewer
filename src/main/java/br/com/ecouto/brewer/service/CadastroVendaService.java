@@ -48,7 +48,6 @@ public class CadastroVendaService {
 	public void emitir(Venda venda) {
 		venda.setStatus(StatusVenda.EMITIDA);
 		salvar(venda);
-		
 		publisher.publishEvent(new VendaEvent(venda));
 		
 	}
