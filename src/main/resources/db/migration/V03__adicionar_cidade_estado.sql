@@ -13,37 +13,42 @@ CREATE TABLE cidade (
     FOREIGN KEY (codigo_estado) REFERENCES estado(codigo)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+ Insert Into estado (Codigo,Sigla,Nome) Values(35,'Sp','São Paulo');
+INSERT INTO cidade (CODIGO, NOME, CODIGO_ESTADO) VALUES
+(3509502,'Campinas',35),
+(3550308,'São Paulo',35);
 
- Insert Into Estado (Codigo,Sigla,Nome) Values(12,'Ac','Acre');  
- Insert Into Estado (Codigo,Sigla,Nome) Values(27,'Al','Alagoas');  
- Insert Into Estado (Codigo,Sigla,Nome) Values(13,'Am','Amazonas');
- Insert Into Estado (Codigo,Sigla,Nome) Values(16,'Ap','Amapá');
- Insert Into Estado (Codigo,Sigla,Nome) Values(29,'Ba','Bahia');
- Insert Into Estado (Codigo,Sigla,Nome) Values(23,'Ce','Ceará');
- Insert Into Estado (Codigo,Sigla,Nome) Values(53,'Df','Distrito Federal');
- Insert Into Estado (Codigo,Sigla,Nome) Values(32,'Es','Espírito Santo');
- Insert Into Estado (Codigo,Sigla,Nome) Values(52,'Go','Goiás');
- Insert Into Estado (Codigo,Sigla,Nome) Values(21,'Ma','Maranhão');
- Insert Into Estado (Codigo,Sigla,Nome) Values(31,'Mg','Minas Gerais');
- Insert Into Estado (Codigo,Sigla,Nome) Values(50,'Ms','Mato Grosso Do Sul');
- Insert Into Estado (Codigo,Sigla,Nome) Values(51,'Mt','Mato Grosso');
- Insert Into Estado (Codigo,Sigla,Nome) Values(15,'Pa','Pará');
- Insert Into Estado (Codigo,Sigla,Nome) Values(25,'Pb','Paraíba');
- Insert Into Estado (Codigo,Sigla,Nome) Values(26,'Pe','Pernambuco');
- Insert Into Estado (Codigo,Sigla,Nome) Values(22,'Pi','Piauí');
- Insert Into Estado (Codigo,Sigla,Nome) Values(41,'Pr','Paraná');
- Insert Into Estado (Codigo,Sigla,Nome) Values(33,'Rj','Rio De Janeiro');
- Insert Into Estado (Codigo,Sigla,Nome) Values(24,'Rn','Rio Grande Do Norte');
- Insert Into Estado (Codigo,Sigla,Nome) Values(11,'Ro','Rondônia');
- Insert Into Estado (Codigo,Sigla,Nome) Values(14,'Rr','Roraima');
- Insert Into Estado (Codigo,Sigla,Nome) Values(43,'Rs','Rio Grande Do Sul');
- Insert Into Estado (Codigo,Sigla,Nome) Values(42,'Sc','Santa Catarina');
- Insert Into Estado (Codigo,Sigla,Nome) Values(28,'Se','Sergipe');
- Insert Into Estado (Codigo,Sigla,Nome) Values(35,'Sp','São Paulo');
- Insert Into Estado (Codigo,Sigla,Nome) Values(17,'To','Tocantins');
+/*
+ Insert Into estado (Codigo,Sigla,Nome) Values(12,'Ac','Acre');  
+ Insert Into estado (Codigo,Sigla,Nome) Values(27,'Al','Alagoas');  
+ Insert Into estado (Codigo,Sigla,Nome) Values(13,'Am','Amazonas');
+ Insert Into estado (Codigo,Sigla,Nome) Values(16,'Ap','Amapá');
+ Insert Into estado (Codigo,Sigla,Nome) Values(29,'Ba','Bahia');
+ Insert Into estado (Codigo,Sigla,Nome) Values(23,'Ce','Ceará');
+ Insert Into estado (Codigo,Sigla,Nome) Values(53,'Df','Distrito Federal');
+ Insert Into estado (Codigo,Sigla,Nome) Values(32,'Es','Espírito Santo');
+ Insert Into estado (Codigo,Sigla,Nome) Values(52,'Go','Goiás');
+ Insert Into estado (Codigo,Sigla,Nome) Values(21,'Ma','Maranhão');
+ Insert Into estado (Codigo,Sigla,Nome) Values(31,'Mg','Minas Gerais');
+ Insert Into estado (Codigo,Sigla,Nome) Values(50,'Ms','Mato Grosso Do Sul');
+ Insert Into estado (Codigo,Sigla,Nome) Values(51,'Mt','Mato Grosso');
+ Insert Into estado (Codigo,Sigla,Nome) Values(15,'Pa','Pará');
+ Insert Into estado (Codigo,Sigla,Nome) Values(25,'Pb','Paraíba');
+ Insert Into estado (Codigo,Sigla,Nome) Values(26,'Pe','Pernambuco');
+ Insert Into estado (Codigo,Sigla,Nome) Values(22,'Pi','Piauí');
+ Insert Into estado (Codigo,Sigla,Nome) Values(41,'Pr','Paraná');
+ Insert Into estado (Codigo,Sigla,Nome) Values(33,'Rj','Rio De Janeiro');
+ Insert Into estado (Codigo,Sigla,Nome) Values(24,'Rn','Rio Grande Do Norte');
+ Insert Into estado (Codigo,Sigla,Nome) Values(11,'Ro','Rondônia');
+ Insert Into estado (Codigo,Sigla,Nome) Values(14,'Rr','Roraima');
+ Insert Into estado (Codigo,Sigla,Nome) Values(43,'Rs','Rio Grande Do Sul');
+ Insert Into estado (Codigo,Sigla,Nome) Values(42,'Sc','Santa Catarina');
+ Insert Into estado (Codigo,Sigla,Nome) Values(28,'Se','Sergipe');
+ Insert Into estado (Codigo,Sigla,Nome) Values(35,'Sp','São Paulo');
+ Insert Into estado (Codigo,Sigla,Nome) Values(17,'To','Tocantins');
 
  
- INSERT INTO CIDADE (CODIGO, NOME, CODIGO_ESTADO) VALUES
+ INSERT INTO cidade (CODIGO, NOME, CODIGO_ESTADO) VALUES
 (1100015,'Alta Floresta D" Oeste',11),
 (1100023,'Ariquemes',11),
 (1100031,'Cabixi',11),
@@ -5609,5 +5614,5 @@ CREATE TABLE cidade (
 (5222203,'Vila Boa',52),
 (5222302,'Vila Propício',52),
 (5300108,'Brasília',53);
-
+*/
 
