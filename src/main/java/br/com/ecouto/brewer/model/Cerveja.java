@@ -54,7 +54,6 @@ public class Cerveja implements Serializable{
 	@NotBlank
 	private String nome;
 	
-	@Size(min=1, max=50, message = "Descrição deve ter de 1 a 50 caracteres")
 	private String descricao;
 	
 	@NotNull

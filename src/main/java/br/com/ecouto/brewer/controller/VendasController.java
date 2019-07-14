@@ -115,6 +115,7 @@ public class VendasController {
 		}
 		venda.setUsuario(usuarioSistema.getUsuario());
 		try {
+			venda.setStatus(StatusVenda.EMITIDA);
 			venda = cadastroVendaService.salvar(venda);
 		}catch(RuntimeException e) {
 			attributes.addFlashAttribute("mensagem",e.getMessage());
