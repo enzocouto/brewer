@@ -75,7 +75,7 @@ public class UsuariosController {
 	
 	@GetMapping
 	public ModelAndView pesquisar(UsuarioFilter usuarioFilter,
-			@PageableDefault(size=3) Pageable pageable,
+			@PageableDefault(size=5) Pageable pageable,
 			HttpServletRequest httpServletRequest) {
 		ModelAndView mv = new ModelAndView("/usuario/PesquisaUsuarios");
 		mv.addObject("grupos", grupoRepository.findAll());
