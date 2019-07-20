@@ -115,6 +115,7 @@ public class VendasController {
 		}
 		venda.setUsuario(usuarioSistema.getUsuario());
 		try {
+			venda.setStatus(StatusVenda.EMITIDA);
 			venda = cadastroVendaService.salvar(venda);
 		}catch(RuntimeException e) {
 			attributes.addFlashAttribute("mensagem",e.getMessage());
@@ -161,7 +162,7 @@ public class VendasController {
 
 	@GetMapping
 	public ModelAndView pesquisar(VendaFilter vendaFilter,
-			@PageableDefault(size = 3) Pageable pageable, HttpServletRequest httpServletRequest) {
+			@PageableDefault(size = 10) Pageable pageable, HttpServletRequest httpServletRequest) {
 		ModelAndView mv = new ModelAndView("/venda/PesquisaVendas");
 		mv.addObject("todosStatus", StatusVenda.values());
 		mv.addObject("tiposPessoa", TipoPessoa.values());

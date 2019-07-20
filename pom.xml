@@ -77,6 +77,12 @@
 		
 		<!-- Apache Commons DBCP -->
 		<commons-dbcp2.version>2.1.1</commons-dbcp2.version>
+		
+		<!-- JasperReports -->
+		<jasperreports.version>6.3.0</jasperreports.version>
+		
+		<!-- JasperReports Fonts -->
+		<jasperreports-fonts.version>6.0.0</jasperreports-fonts.version>
 	</properties>
 
 	<build>
@@ -98,6 +104,29 @@
 					<driver>com.mysql.jdbc.Driver</driver>
 				</configuration>
 			</plugin>
+			
+			<plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-dependency-plugin</artifactId>
+	            <version>2.3</version>
+	            <executions>
+	                <execution>
+	                    <phase>package</phase>
+	                    <goals><goal>copy</goal></goals>
+	                    <configuration>
+	                        <artifactItems>
+	                            <artifactItem>
+	                                <groupId>com.github.jsimone</groupId>
+	                                <artifactId>webapp-runner</artifactId>
+	                                <version>8.0.30.2</version>
+	                                <destFileName>webapp-runner.jar</destFileName>
+	                            </artifactItem>
+	                        </artifactItems>
+	                    </configuration>
+	                </execution>
+	            </executions>
+	        </plugin>
+			
 		</plugins>
 	</build>
 	
@@ -107,6 +136,10 @@
 	   </profile>
 	   <profile>
 	   		<id>prod</id>
+	   		<activation>
+	   			<activeByDefault>true</activeByDefault>
+	   		</activation>
+	   		
 	   		<dependencies>
 	   			<!-- MySQL Driver -->
 				<dependency>
@@ -333,7 +366,19 @@
 			<version>${commons-dbcp2.version}</version>
 		</dependency>
 		
-        		
+        <!-- JasperReports -->
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>${jasperreports.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+		    <groupId>net.sf.jasperreports</groupId>
+		    <artifactId>jasperreports-fonts</artifactId>
+		    <version>${jasperreports-fonts.version}</version>
+		    <scope>compile</scope>
+		</dependency>		
 	</dependencies>
 
 </project>
