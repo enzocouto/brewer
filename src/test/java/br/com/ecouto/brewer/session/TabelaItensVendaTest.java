@@ -3,6 +3,9 @@ package br.com.ecouto.brewer.session;
 import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.Month;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -79,6 +82,12 @@ public class TabelaItensVendaTest {
 		
 		assertEquals(new BigDecimal("13.50"), tabelaItensVenda.getValorTotal());
 		assertEquals(1, tabelaItensVenda.total());
+	}
+	
+	@Test
+	public void gerarData() {
+		System.out.println(LocalDate.of(2019, Month.FEBRUARY, 10).toEpochDay() * 24 * 60 * 60);
+		System.out.println(LocalDate.of(2019, Month.JULY, 15).toEpochDay() * 24 * 60 * 60);
 	}
 	
 	@Test
